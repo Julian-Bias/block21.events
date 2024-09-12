@@ -85,26 +85,6 @@ async function createEvent(name, combinedDateTime, location, description) {
   }
 }
 
-//ask api to update events and rerender(currently not being used)
-async function updateEvent(name, combinedDateTime, location, description) {
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(eventData),
-    });
-    const json = await response.json();
-
-    if (json.error) {
-      throw new Error(json.message);
-    }
-
-    render();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 //ask API to delete an event and rerender using the id
 async function deleteEvent(id) {
   try {
