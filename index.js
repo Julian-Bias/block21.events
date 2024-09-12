@@ -141,7 +141,6 @@ function renderEvents() {
     eventDetail.innerHTML = /*html*/ `
     <h2>${event.name}</h2>
     <li>${event.date}</li>
-    <li>${event.time}</li>
     <li>${event.location}</li>
     <li>${event.description}</li>
     `;
