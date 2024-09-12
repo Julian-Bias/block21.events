@@ -1,5 +1,5 @@
 const COHORT = "2407-FTB-ET-WEB-PT";
-const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/events`;
+const API_URL = `https://fsa-crud-2aa9294fe819.herokuapp.com/api/${COHORT}/events/`;
 
 const state = {
   events: [],
@@ -16,7 +16,6 @@ async function render() {
   await getEvents();
   renderEvents();
 }
-render();
 
 //update with events from api
 async function getEvents() {
@@ -33,28 +32,34 @@ async function getEvents() {
 //form submission handler
 async function addEvent(event) {
   event.preventDefault();
-  
+
   const name = addEventForm.title.value;
   const date = addEventForm.dateInput.value;
   const time = addEventForm.time.value;
   const location = addEventForm.location.value;
   const description = addEventForm.description.value;
 
-  console.log("Adding event with data:", { name, date, time, location, description });
+  const combinedDateTime = `${date}T${time}:00.000Z`;
+
+  console.log("Adding event with data:", {
+    name,
+    combinedDateTime,
+    location,
+    description,
+  });
 
   //call function to be re-rendered
-  await createEvent(name, date, time, location, description);
+  await createEvent(name, combinedDateTime, location, description);
   render();
 }
 
 //ask api to create new event and rerender
-async function createEvent(name, date, time, location, description) {
+async function createEvent(name, combinedDateTime, location, description) {
   const eventData = {
     name,
-    date,
-    time,
-    location,
     description,
+    date: combinedDateTime,
+    location,
   };
 
   try {
@@ -80,8 +85,8 @@ async function createEvent(name, date, time, location, description) {
   }
 }
 
-//ask api to update events and rerender
-async function updateEvent(name, date, time, location, description) {
+//ask api to update events and rerender(currently not being used)
+async function updateEvent(name, combinedDateTime, location, description) {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
@@ -153,3 +158,4 @@ function renderEvents() {
   });
   eventList.replaceChildren(...eventDetails);
 }
+render();
